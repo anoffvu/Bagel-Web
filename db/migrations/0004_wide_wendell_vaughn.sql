@@ -1,0 +1,1 @@
+ALTER TABLE "guilds" ADD COLUMN "messages_processed" text DEFAULT '0' NOT NULL;
