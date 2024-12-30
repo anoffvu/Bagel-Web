@@ -91,14 +91,12 @@ export const authOptions: AuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      console.log('Session callback - input token:', token);
       // Copy token properties to the session
       session.user = {
         id: token.id,
         email: token.email,
         name: token.name,
       };
-      console.log('Session callback - output session:', session);
       return session;
     }
   },
