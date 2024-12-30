@@ -62,6 +62,7 @@ export default function LandingPage() {
                 size="lg"
                 variant="outline"
                 className="border-primary text-foreground hover:bg-primary/10 rounded-full px-8 h-12 transition-all hover:scale-105"
+                onClick={() => window.location.href = "/docs/commands"}
               >
                 View Documentation
               </Button>
