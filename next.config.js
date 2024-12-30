@@ -4,13 +4,15 @@ const nextConfig = {
   distDir: 'dist',
   webpack: (config) => {
     config.externals.push({
-      'zlib-sync': 'zlib-sync'
-    });
-    return config;
+      'zlib-sync': 'zlib-sync',
+    })
+    return config
   },
   experimental: {
-    serverActions: true
-  }
+    serverActions: {
+      allowedOrigins: ['localhost:3000'],
+    },
+  },
 }
 
-module.exports = nextConfig 
+module.exports = nextConfig
