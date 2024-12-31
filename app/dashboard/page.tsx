@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { Session } from "next-auth";
 import { useRouter } from 'next/navigation';
+import { Textarea } from "@/app/components/ui/textarea";
+import { Pencil } from "lucide-react";
 
 // Update the session type to match our NextAuth configuration
 interface ExtendedSession extends Session {
@@ -29,12 +31,14 @@ interface Guild {
   messagesProcessed: string;
   lastActiveAt: string;
   subscriptionExpiryDate: string;
+  description: string | null;
 }
 
 export default function Dashboard() {
   const { data: session, status } = useSession() as { data: ExtendedSession | null, status: "loading" | "authenticated" | "unauthenticated" };
   const [guilds, setGuilds] = useState<Guild[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [editingDescription, setEditingDescription] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -80,7 +84,7 @@ export default function Dashboard() {
           messagesProcessed: guild.messages_processed.toString(),
           hasActiveSubscription: guild.has_active_subscription,
           subscriptionExpiryDate: guild.subscription_expiry_date,
-          joinedAt: guild.joined_at,
+          description: guild.description,
         })));
       } catch (error) {
         console.error('Error fetching guilds:', error);
@@ -146,6 +150,24 @@ export default function Dashboard() {
 
   const handleLogout = async () => {
     await signOut({ redirect: true, callbackUrl: '/' });
+  };
+
+  const handleUpdateDescription = async (guildId: string, description: string) => {
+    try {
+      await supabase
+        .from('guilds')
+        .update({ description })
+        .eq('id', guildId);
+
+      setGuilds(currentGuilds =>
+        currentGuilds.map(guild =>
+          guild.id === guildId ? { ...guild, description } : guild
+        )
+      );
+      setEditingDescription(null);
+    } catch (error) {
+      console.error('Error updating description:', error);
+    }
   };
 
   if (status === "loading") {
@@ -217,6 +239,53 @@ export default function Dashboard() {
                     <CardDescription>Server subscription and usage details</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-muted-foreground">Community Description: </label>
+                      {editingDescription === guild.id ? (
+                        <div className="space-y-2">
+                          <Textarea
+                            placeholder="Describe your community..."
+                            defaultValue={guild.description || ''}
+                            className="min-h-[100px]"
+                            data-guild-id={guild.id}
+                            onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+                              if (e.key === 'Enter' && e.metaKey) {
+                                handleUpdateDescription(guild.id, (e.target as HTMLTextAreaElement).value);
+                              }
+                            }}
+                          />
+                          <div className="flex gap-2">
+                            <Button
+                              variant="default"
+                              onClick={() => handleUpdateDescription(guild.id, (document.querySelector(`textarea[data-guild-id="${guild.id}"]`) as HTMLTextAreaElement)?.value || '')}
+                            >
+                              Save
+                            </Button>
+                            <Button
+                              variant="outline"
+                              onClick={() => setEditingDescription(null)}
+                            >
+                              Cancel
+                            </Button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="inline-flex items-center gap-1 group">
+                          <p className="text-sm text-muted-foreground">
+                            {guild.description || 'No description set'}
+                          </p>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 p-0 -mr-1.5"
+                            onClick={() => setEditingDescription(guild.id)}
+                          >
+                            <Pencil className="h-3.5 w-3.5" />
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+
                     <div className="flex items-center justify-between">
                       <span className="text-muted-foreground">Subscription Status</span>
                       <span className={guild.hasActiveSubscription ? "text-emerald-500" : "text-yellow-500"} >

@@ -42,6 +42,7 @@ export const guilds = pgTable("guilds", {
   lastActiveAt: timestamp("last_active_at").defaultNow().notNull(),
   messagesProcessed: text("messages_processed").default("0").notNull(),
   subscriptionExpiryDate: timestamp("subscription_expiry_date"),
+  description: text("description"),
 });
 
 export type Guild = typeof guilds.$inferSelect;
