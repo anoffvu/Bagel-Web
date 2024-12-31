@@ -1,5 +1,4 @@
-import { Guild, TextChannel } from "discord.js";
-import { processHistoricalMessages } from "./messages";
+import { Guild } from "discord.js";
 import { db } from "../../db/index";
 import { guilds, guildUsers } from "../../db/schema";
 import { eq } from "drizzle-orm";
@@ -35,42 +34,6 @@ export async function trackGuild(guild: Guild, ownerUserId: string): Promise<voi
         name: guild.name 
       })
       .where(eq(guilds.id, guild.id));
-  }
-}
-
-/**
- * Processes the introduction channel of a guild.
- * Finds the intro channel and processes its historical messages.
- * Also ensures the guild is tracked in the database.
- * 
- * @param guild - The Discord guild to process
- * @param ownerUserId - The Discord user ID who added the bot
- */
-export async function processGuildIntroChannel(guild: Guild, ownerUserId: string): Promise<void> {
-  console.log(`Processing messages in guild: ${guild.name}`);
-
-  // First, ensure the guild is tracked
-  await trackGuild(guild, ownerUserId);
-
-  const introChannel = guild.channels.cache.find(
-    (channel) =>
-      (channel.name.toLowerCase().includes("intro") ||
-        channel.name.toLowerCase().includes("test")) &&
-      channel instanceof TextChannel
-  ) as TextChannel;
-
-  if (introChannel) {
-    console.log(`Found introductions channel: #${introChannel.name}`);
-    try {
-      await processHistoricalMessages(introChannel);
-    } catch (error) {
-      console.error(
-        `Error processing historical messages in ${guild.name}:`,
-        error
-      );
-    }
-  } else {
-    console.log(`No introductions channel found in ${guild.name}`);
   }
 }
 
@@ -115,4 +78,20 @@ export async function associateUserWithGuild(
     discordUserId,
     supabaseUserId,
   });
+}
+
+/**
+ * Updates a guild's description in the database.
+ * 
+ * @param guildId - The Discord guild ID
+ * @param description - The new description for the guild
+ */
+export async function updateGuildDescription(
+  guildId: string,
+  description: string | null
+): Promise<void> {
+  await db
+    .update(guilds)
+    .set({ description })
+    .where(eq(guilds.id, guildId));
 } 
