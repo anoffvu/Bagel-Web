@@ -67,15 +67,15 @@ export default function CommandsDocumentation() {
           </div>
 
           <div className="grid gap-6 md:grid-cols-2">
-            {commandsData.categories.map((category, i) => (
-              <Card key={i}>
+            {commandsData.categories.map((category) => (
+              <Card key={category.title.toLowerCase().replace(/\s+/g, '-')}>
                 <CardHeader>
                   <CardTitle>{category.title}</CardTitle>
                   <CardDescription>{category.description}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {category.commands.map((command, j) => (
-                    <div key={j}>
+                  {category.commands.map((command) => (
+                    <div key={command.name.toLowerCase().replace(/\s+/g, '-')}>
                       <h3 className="font-semibold text-foreground">
                         {command.name}
                       </h3>
@@ -103,8 +103,8 @@ export default function CommandsDocumentation() {
               <CardContent className="space-y-4">
                 <div className="text-sm text-muted-foreground">
                   <ul className="list-disc list-inside space-y-2">
-                    {commandsData.usageNotes.map((note, i) => (
-                      <li key={i}>{note}</li>
+                    {commandsData.usageNotes.map((note) => (
+                      <li key={note.toLowerCase().replace(/\s+/g, '-')}>{note}</li>
                     ))}
                   </ul>
                 </div>
