@@ -41,18 +41,19 @@ export default function LandingPage() {
           </Button>
         </nav>
 
-        <div className='container mx-auto px-4 py-32'>
-          <div className='text-center mb-24 space-y-6'>
+        <div className='container mx-auto px-4 py-24'>
+          <div className='text-center mb-12 space-y-6'>
             <div className='inline-block'>
               <h1 className='text-7xl font-bold text-foreground leading-tight'>
-                Meet Sage
+                Meet Bagel Bot
               </h1>
               <div className='h-1 w-full bg-gradient-to-r from-primary to-[#9f24f2] rounded-full mt-2' />
             </div>
-            <p className='text-xl text-muted-foreground max-w-[600px] mx-auto'>
-              Your intelligent Discord companion that brings AI-powered
-              conversations, insights, and community connections
+            <p className='text-xl text-muted-foreground max-w-[600px] mx-auto py-8'>
+              Your intelligent Discord bot that brings AI-powered community
+              connections, engagement, and marketing content generation.
             </p>
+
             <div className='flex items-center justify-center gap-4'>
               <Button
                 size='lg'
@@ -78,17 +79,16 @@ export default function LandingPage() {
           <div className='grid md:grid-cols-3 gap-6 relative'>
             <Card className='group bg-card/50 border-border backdrop-blur-xl hover:border-primary/50 transition-all hover:-translate-y-1'>
               <CardHeader>
-                <CardTitle className='text-xl text-foreground'>
-                  Smart Conversations
-                </CardTitle>
+                <CardTitle className='text-xl text-foreground'>Sage</CardTitle>
                 <CardDescription>
-                  Engage in natural conversations with AI
+                  Chat a bot trained on your community's knowledge
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <p className='text-muted-foreground'>
-                  Ask questions, get explanations, and have meaningful
-                  discussions with our AI assistant.
+                  Allow members to ask questions, get explanations, and have
+                  meaningful discussions with our AI assistant that uses in
+                  community learning and direct citations from members.
                 </p>
               </CardContent>
             </Card>
@@ -99,13 +99,14 @@ export default function LandingPage() {
                   Community Matching
                 </CardTitle>
                 <CardDescription>
-                  Connect with like-minded members
+                  Connect with like-minded members using AI
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <p className='text-muted-foreground'>
-                  Find and connect with community members who share similar
-                  interests and perspectives.
+                  Plug into your #introductions channel and connect community
+                  members with similar interests, background, and goals. All
+                  based on Bagel's matchmaking AI.
                 </p>
               </CardContent>
             </Card>
@@ -113,23 +114,28 @@ export default function LandingPage() {
             <Card className='group bg-card/50 border-border backdrop-blur-xl hover:border-primary/50 transition-all hover:-translate-y-1'>
               <CardHeader>
                 <CardTitle className='text-xl text-foreground'>
-                  Message Summarization
+                  Weekly Summaries
                 </CardTitle>
                 <CardDescription>
-                  Never miss important discussions
+                  Never miss important community moments
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <p className='text-muted-foreground'>
-                  Get concise summaries of long conversations and catch up
-                  quickly on what you missed.
+                  Create a weekly newsletter to summarize your community's
+                  activity and learnings to allow members to quickly catch up,
+                  stay engaged, and get value each week.
                 </p>
               </CardContent>
             </Card>
           </div>
 
-          <div className='text-center mt-24'>
-            <p className='text-muted-foreground mb-4'>
+          <div className='text-center mt-12'>
+            <p className='text-muted-foreground'>
+              Turn community chatter, #introductions, and weekly summaries into
+              higher engagement, retention, and actionable insights.
+            </p>
+            <p className='text-muted-foreground mb-4 mt-16'>
               Start with {process.env.NEXT_PUBLIC_TRIAL_MESSAGE_LIMIT || 20}{' '}
               free messages
             </p>
