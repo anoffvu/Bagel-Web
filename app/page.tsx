@@ -81,7 +81,7 @@ export default function LandingPage() {
               <CardHeader>
                 <CardTitle className='text-xl text-foreground'>Sage</CardTitle>
                 <CardDescription>
-                  Chat a bot trained on your community's knowledge
+                  Chat with a bot trained on your community's knowledge
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -96,7 +96,7 @@ export default function LandingPage() {
             <Card className='group bg-card/50 border-border backdrop-blur-xl hover:border-primary/50 transition-all hover:-translate-y-1'>
               <CardHeader>
                 <CardTitle className='text-xl text-foreground'>
-                  Community Matching
+                  Member Matching
                 </CardTitle>
                 <CardDescription>
                   Connect with like-minded members using AI
