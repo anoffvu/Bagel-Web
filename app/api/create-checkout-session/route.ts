@@ -78,6 +78,24 @@ export async function POST(req: Request) {
     return NextResponse.json({ url: checkoutSession.url });
   } catch (error) {
     console.error('Error creating checkout session:', error);
+    
+    // Handle Stripe errors
+    if (error instanceof Stripe.errors.StripeError) {
+      const statusCode = error.statusCode || 400;
+      let message = 'An error occurred with the payment service';
+      
+      // Handle specific Stripe errors
+      if (error.message.includes('price specified is inactive')) {
+        message = 'The subscription plan is currently unavailable. Please try again later or contact support.';
+      }
+      
+      return NextResponse.json(
+        { error: message },
+        { status: statusCode }
+      );
+    }
+
+    // Handle other errors
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

@@ -9,6 +9,7 @@ import { Session } from "next-auth";
 import { useRouter } from 'next/navigation';
 import { Textarea } from "@/app/components/ui/textarea";
 import { Pencil } from "lucide-react";
+import { useToast } from "@/app/components/ui/use-toast";
 
 // Update the session type to match our NextAuth configuration
 interface ExtendedSession extends Session {
@@ -39,6 +40,7 @@ export default function Dashboard() {
   const [guilds, setGuilds] = useState<Guild[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [editingDescription, setEditingDescription] = useState<string | null>(null);
+  const { toast } = useToast();
   const router = useRouter();
 
   useEffect(() => {
@@ -141,10 +143,25 @@ export default function Dashboard() {
         }),
       });
 
-      const { url } = await response.json();
-      window.location.href = url;
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to create checkout session');
+      }
+
+      if (!data.url) {
+        throw new Error('No checkout URL returned from server');
+      }
+
+      window.location.href = data.url;
     } catch (error) {
       console.error('Error creating checkout session:', error);
+      const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      });
     }
   };
 

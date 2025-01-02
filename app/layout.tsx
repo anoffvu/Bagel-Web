@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { getServerSession } from 'next-auth'
 import AuthProvider from './components/providers/session-provider'
+import { Toaster } from './components/ui/toaster'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,6 +24,7 @@ export default async function RootLayout({
       <body className={`${inter.className} dark bg-black antialiased`}>
         <AuthProvider session={session}>
           {children}
+          <Toaster />
         </AuthProvider>
       </body>
     </html>
